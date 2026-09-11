@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>foodiehub - Online Food Ordering</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar">
+    <div class="logo">
+      <img src="image-1786030197251.png" alt="FreshBite logo" class="logo-img">
+      FreshBite
+    </div>
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#restaurants">Restaurants</a>
+      <a href="#menu">Menu</a>
+      <a href="#cart">Cart (<span id="cartCount">0</span>)</a>
+      <a href="#account" id="accountLink">Account</a>
+      <a href="#login" id="loginLink">Login</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Home Page -->
+  <section id="home" class="section hero">
+    <div class="hero-text">
+      <h1>Fresh Food, Fast Delivery</h1>
+      <p>Discover delicious food from your favorite restaurants and order with ease.</p>
+      <p class="hero-note">Built with HTML5, CSS3, and vanilla JavaScript — no framework, no database.</p>
+      <a href="#restaurants" class="btn">Browse Restaurants</a>
+    </div>
+    <div class="hero-offers">
+      <div class="offer-card">🎉 50% OFF on first order</div>
+      <div class="offer-card">🚚 Free delivery above ₹499</div>
+    </div>
+    <div class="categories">
+      <h3>Popular Categories</h3>
+      <div class="category-list">
+        <button class="cat-btn" onclick="filterCategory('All')">All</button>
+        <button class="cat-btn" onclick="filterCategory('Healthy Food')">Healthy</button>
+        <button class="cat-btn" onclick="filterCategory('Italian')">Italian</button>
+        <button class="cat-btn" onclick="filterCategory('Japanese')">Japanese</button>
+        <button class="cat-btn" onclick="filterCategory('Indian')">Indian</button>
+        <button class="cat-btn" onclick="filterCategory('Desserts')">Desserts</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Restaurant Listing -->
+  <section id="restaurants" class="section">
+    <h2>Restaurant Listings</h2>
+    <p class="subtitle">Choose a restaurant and explore its menu</p>
+    <div class="filter-bar">
+      <label>Filter by rating:</label>
+      <select id="ratingFilter" onchange="applyFilters()">
+        <option value="all">All Ratings</option>
+        <option value="4.5">4.5+ Stars</option>
+        <option value="4.0">4.0+ Stars</option>
+        <option value="4.7">4.7+ Stars</option>
+      </select>
+    </div>
+    <div id="restaurantList" class="grid"></div>
+  </section>
+
+  <!-- Menu Page -->
+  <section id="menu" class="section">
+    <h2>Menu - <span id="menuRestaurantName">Fresh Bites Cafe</span></h2>
+    <p class="subtitle">Click an item to see details</p>
+    <div class="filter-bar">
+      <label>Diet:</label>
+      <button class="filter-btn active" onclick="filterDiet('all')">All</button>
+      <button class="filter-btn" onclick="filterDiet('veg')">🟢 Veg</button>
+      <button class="filter-btn" onclick="filterDiet('nonveg')">🔴 Non-Veg</button>
+    </div>
+    <div id="menuGrid" class="grid"></div>
+  </section>
+
+  <!-- Product Detail Modal -->
+  <div id="productModal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      <img id="modalImage" src="" alt="Food item">
+      <h3 id="modalName"></h3>
+      <p id="modalDetails"></p>
+      <p id="modalIngredients"></p>
+      <p id="modalNutrition"></p>
+      <p class="price" id="modalPrice"></p>
+      <button class="btn" id="modalAddBtn">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- Shopping Cart -->
+  <section id="cart" class="section">
+    <h2>My Cart</h2>
+    <div id="cartItems"></div>
+    <div id="cartTotal" class="cart-total"></div>
+  </section>
+
+  <!-- Checkout -->
+  <section id="checkout" class="section">
+    <h2>Checkout</h2>
+    <form id="checkoutForm">
+      <label>Name *</label>
+      <input type="text" id="custName" required placeholder="Your name">
+
+      <label>Phone *</label>
+      <input type="tel" id="custPhone" required placeholder="+91 9876543210">
+
+      <label>Delivery Address *</label>
+      <textarea id="custAddress" rows="3" required placeholder="Full address"></textarea>
+
+      <label>Delivery Time</label>
+      <select id="deliveryTime">
+        <option value="30 mins">30 minutes</option>
+        <option value="45 mins">45 minutes</option>
+        <option value="1 hour">1 hour</option>
+      </select>
+
+      <label>Payment Method</label>
+      <select id="paymentMethod">
+        <option value="Cash on Delivery">Cash on Delivery</option>
+        <option value="UPI">UPI (Simulated)</option>
+        <option value="Card">Card (Simulated)</option>
+      </select>
+
+      <label>Order Notes</label>
+      <textarea id="orderNotes" rows="2" placeholder="Any special instructions"></textarea>
+
+      <div id="orderSummary" class="order-summary"></div>
+      <button type="submit" class="btn">Place Order</button>
+    </form>
+    <p id="orderMsg" class="order-msg"></p>
+  </section>
+
+  <!-- Order Tracking -->
+  <section id="tracking" class="section">
+    <h2>Order Tracking</h2>
+    <div class="tracking-steps">
+      <div class="step active" data-step="1"><span>1</span>Order Received</div>
+      <div class="step" data-step="2"><span>2</span>Preparing</div>
+      <div class="step" data-step="3"><span>3</span>Out for Delivery</div>
+      <div class="step" data-step="4"><span>4</span>Delivered</div>
+    </div>
+  </section>
+
+  <!-- Login / Register -->
+  <section id="login" class="section">
+    <h2>Login / Register</h2>
+    <p class="subtitle">Simulated login - no real account needed</p>
+    <div class="auth-box">
+      <form id="loginForm">
+        <h3>Login</h3>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPass" placeholder="Password" required>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <form id="registerForm">
+        <h3>Register</h3>
+        <input type="text" id="regName" placeholder="Full Name" required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPass" placeholder="Password" required>
+        <button type="submit" class="btn btn-outline">Register</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- User Account -->
+  <section id="account" class="section hidden">
+    <h2>My Account</h2>
+    <div id="accountInfo" class="account-box"></div>
+    <h3>Order History</h3>
+    <div id="orderHistory"><p>No orders yet.</p></div>
+    <button class="btn btn-outline" onclick="logout()">Logout</button>
+  </section>
+
+  <!-- About Us -->
+  <section id="about" class="section">
+    <h2>About FreshBite</h2>
+    <p>FreshBite is an online food ordering platform built as a Web Development internship project by Your Internship Company.</p>
+    <p>Our goal is to connect hungry customers with the best local restaurants for fast delivery.</p>
+    <div class="about-grid">
+      <div class="about-card"><strong>🍽️ 5+</strong><span>Restaurants</span></div>
+      <div class="about-card"><strong>⭐ 4.7</strong><span>Avg Rating</span></div>
+      <div class="about-card"><strong>🚚 30 min</strong><span>Fast Delivery</span></div>
+    </div>
+  </section>
+
+  <section id="developer" class="developer-section">
+  <div class="developer-card">
+
+    <img src="kushal.jpg" alt="Kushal Salvi" class="developer-photo" onclick="openPhoto()">
+
+    <div class="developer-info">
+      <p class="developer-label">Designed & Customized by</p>
+
+      <h2>Kushal Salvi</h2>
+
+      <h3>Web Development Intern</h3>
+
+      <p>
+        This project is part of my web development internship
+        where I learned, built and customized this website.
+      </p>
+
+      <p class="developer-tech">
+        HTML &nbsp; | &nbsp; CSS &nbsp; | &nbsp; JavaScript
+      </p>
+    </div>
+
+  </div>
+</section>
+
+  <!-- Contact Us -->
+  <section id="contact" class="section">
+    <h2>Contact Us</h2>
+    <div class="contact-grid">
+      <div>
+        <p><strong>📍 Address:</strong> India</p>
+        <p><strong>📞 Phone:</strong> Available on request</p>
+        <p><strong>✉️ Email:</strong> contact@freshbite.com</p>
+        <p><strong>🕐 Hours:</strong> Mon–Sat, 11 AM – 5 PM</p>
+      </div>
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea rows="3" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>FreshBite Internship Project | Your Internship Company | Student: DAS-EC-001</p>
+    <p><a href="https://www.freeinternships.in/blog/">Task Link</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+  <div id="photoModal" class="photo-modal" onclick="closePhoto()">
+  <img src="kushal.jpg" alt="Kushal Salvi">
+</div>
+</body>
+</html>
